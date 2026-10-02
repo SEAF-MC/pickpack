@@ -5,6 +5,8 @@ A verion of pickpack that has been smashed together with the geyser extras pack 
 New Features:
  - Player specified resource pack load order
 
+Note: If you have used normal pickpack before make sure to delete the `cache` and `translations` folders.
+
 ## PickPack
 
 [![GitHub release](https://img.shields.io/github/release/onebeastchris/PickPack?include_prereleases=&sort=semver&color=yellowgreen)](https://github.com/onebeastchris/PickPack/releases/)
