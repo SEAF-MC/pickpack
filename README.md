@@ -4,6 +4,7 @@ A verion of pickpack that has been smashed together with the geyser extras pack 
 
 New Features:
  - Player specified resource pack load order
+ - Player specified subpacks
 
 Note: If you have used normal pickpack before make sure to delete the `cache` and `translations` folders.
 
