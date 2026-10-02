@@ -23,7 +23,7 @@ import java.util.List;
 
 public class PickPack implements Extension {
 
-    private static final String version = "(v1.2.3)";
+    private static final String version = "(v1.3.0)";
 
     public static ResourcePackLoader loader;
     public static PlayerStorage storage;
@@ -95,10 +95,17 @@ public class PickPack implements Extension {
     //on player join: send packs if we have any for them
     @Subscribe
     public void onPlayerResourcePackLoadEvent(SessionLoadResourcePacksEvent event) {
-        logger.debug("Sending packs to " + event.connection().xuid());
-        List<ResourcePack> connectionPacks = storage.getPacks(event.connection().xuid());
+        String xuid = event.connection().xuid();
+        if (xuid == null) {
+            xuid = "";
+        }
+        logger.debug("Sending packs to " + (xuid.isEmpty() ? "unauthenticated player" : xuid));
+        List<ResourcePack> connectionPacks = storage.getPacks(xuid);
         for (ResourcePack pack : connectionPacks) {
             event.register(pack);
+        }
+        if (event.connection() instanceof org.geysermc.geyser.session.GeyserSession session) {
+            PacketInterceptor.attach(session, xuid);
         }
     }
 
@@ -129,6 +136,20 @@ public class PickPack implements Extension {
                 .build());
 
         commandsEvent.register(Command.builder(this)
+                .name("settings")
+                .aliases(List.of("setting"))
+                .bedrockOnly(true)
+                .playerOnly(true)
+                .source(GeyserConnection.class)
+                .description("Configure PickPack settings")
+                .permission(config.menuPermission())
+                .executor((source, command, args) -> {
+                    Form form = new Form((GeyserConnection) source);
+                    form.send("settings");
+                })
+                .build());
+
+        commandsEvent.register(Command.builder(this)
                 .name("reset")
                 .aliases(List.of("default"))
                 .bedrockOnly(true)
@@ -138,7 +159,7 @@ public class PickPack implements Extension {
                 .permission(config.defaultPermission())
                 .executor((source, command, args) -> {
                     Form form = new Form((GeyserConnection) source);
-                    form.send("clear");
+                    form.send("reset");
                 })
                 .build());
 

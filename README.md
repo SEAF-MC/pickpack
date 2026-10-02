@@ -1,3 +1,10 @@
+## Fork Notes
+
+A verion of pickpack that has been smashed together with the geyser extras pack manager using AI. This is intended for private use but I will do my best to provide support if needed.
+
+New Features:
+ - Player specified resource pack load order
+
 ## PickPack
 
 [![GitHub release](https://img.shields.io/github/release/onebeastchris/PickPack?include_prereleases=&sort=semver&color=yellowgreen)](https://github.com/onebeastchris/PickPack/releases/)
@@ -36,9 +43,10 @@ These are needed so the automatic transfer packet works.
 - Reload the extension using `/pickpack reload`, or restart the server.
 
 ### Commands:
-- `/pickpack menu` or `/pickpack list` - Opens the pack selection menu.
-- `/pickpack reset` or `/pickpack default` - Resets the player's pack selection to the default packs.
-- `/pickpack reload` - Reloads the config.yml and the packs.
+- `/pickpack menu` or `/pickpack list` - Opens the pack management menu.
+- `/pickpack settings` - Opens the PickPack settings form.
+- `/pickpack reset` or `/pickpack default` - Resets pack selection and settings to server defaults.
+- `/pickpack reload` - Reloads the config.yml and resource packs.
 
 ### Languages:
 This extension has multi-language support. However, the default language is English - to add more languages, copy the `en_US.properties` file from the `/extensions/PickPack/translations` folder, and translate the strings. 
