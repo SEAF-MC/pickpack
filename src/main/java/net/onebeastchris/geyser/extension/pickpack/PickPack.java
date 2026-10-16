@@ -23,7 +23,7 @@ import java.util.List;
 
 public class PickPack implements Extension {
 
-    private static final String version = "(v1.3.0)";
+    private static final String version = "(v1.4.0)";
 
     public static ResourcePackLoader loader;
     public static PlayerStorage storage;
@@ -42,6 +42,8 @@ public class PickPack implements Extension {
             this.disable();
             throw new RuntimeException("Failed to load config!");
         }
+
+        applyPathLengthWarningConfig();
 
         if (config.translations().outdatedConfigTest() != null) {
             this.logger().warning("Your config is outdated! Please let it regenerate. Changes include:");
@@ -173,6 +175,7 @@ public class PickPack implements Extension {
                     try {
                         config = ConfigLoader.load(this, this.getClass(), ConfigLoader.Config.class);
                         assert config != null;
+                        applyPathLengthWarningConfig();
 
                         LanguageManager.LOCALE_PROPERTIES.clear();
                         LanguageManager.init(this.dataFolder().resolve("translations"));
@@ -183,5 +186,21 @@ public class PickPack implements Extension {
                     }
                 })
                 .build());
+    }
+
+    public static void applyPathLengthWarningConfig() {
+        boolean showWarning = config == null || config.showResourcePackLengthWarning();
+        System.setProperty("Geyser.ShowResourcePackLengthWarning", String.valueOf(showWarning));
+        try {
+            Class<?> clazz = Class.forName("org.geysermc.geyser.registry.loader.ResourcePackLoader");
+            java.lang.reflect.Field unsafeField = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            sun.misc.Unsafe unsafe = (sun.misc.Unsafe) unsafeField.get(null);
+            java.lang.reflect.Field field = clazz.getDeclaredField("SHOW_RESOURCE_PACK_LENGTH_WARNING");
+            Object base = unsafe.staticFieldBase(field);
+            long offset = unsafe.staticFieldOffset(field);
+            unsafe.putBoolean(base, offset, showWarning);
+        } catch (Throwable ignored) {
+        }
     }
 }

@@ -1,5 +1,6 @@
 package net.onebeastchris.geyser.extension.pickpack.util;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,12 +66,18 @@ public class ConfigLoader {
             @JsonProperty("port") int port,
             @JsonProperty("show-pack-descriptions") boolean showPackDescription,
             @JsonProperty("use-transfer-packet") boolean useTransferPacket,
+            @JsonProperty("show-resource-pack-length-warning")
+            @JsonAlias({"show-path-length-warning", "show-path-length-warnings", "show-resource-pack-length-warnings"})
+            Boolean showResourcePackLengthWarningRaw,
             @JsonProperty("menu-permission") String menuPermission,
             @JsonProperty("default-permission") String defaultPermission,
             @JsonProperty("default-locale") String defaultLocale,
             @JsonProperty("reload-permission") String reloadPermission,
             @JsonProperty("translations") Translations translations
     ) {
+        public boolean showResourcePackLengthWarning() {
+            return showResourcePackLengthWarningRaw == null || showResourcePackLengthWarningRaw;
+        }
         public record Translations(
                 @JsonProperty("menu-command-description") String menuCommandDescription,
                 @JsonProperty("reset-command-description") String resetCommandDescription,

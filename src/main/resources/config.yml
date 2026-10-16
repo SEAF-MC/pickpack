@@ -9,6 +9,10 @@ port: 19132
 show-pack-descriptions: true
 use-transfer-packet: true
 
+# Whether to show warnings when a resource pack contains file paths that meet or exceed 80 characters.
+# Bedrock platforms can have issues with paths >= 80 characters, but if your packs work fine you can turn this warning off.
+show-resource-pack-length-warning: true
+
 # Command permissions:
 # pickpack.reload: Permission to reload the config with /pickpack reload
 reload-permission: "pickpack.reload"
